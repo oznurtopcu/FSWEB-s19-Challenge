@@ -30,7 +30,7 @@ public class User implements UserDetails {
 
     @Column(name = "user_name")
     @NotBlank(message = "Username cannot be empty!")
-    private String usernName;
+    private String userName;
 
     @Column(name = "email")
     @NotBlank(message = "Email cannot be empty!")

@@ -5,10 +5,13 @@ import com.workintech.s19challenge.exceptions.ApiException;
 import com.workintech.s19challenge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserRepository userRepository;
 
@@ -37,5 +40,15 @@ public class UserServiceImpl implements UserService{
         User foundUser = findById(id);
         userRepository.delete(foundUser);
         return foundUser;
+    }
+
+    //UserDetailsService'den implement edilen method
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(username)
+                .orElseThrow(()-> {
+                    System.out.println("User credentials are not valid!");
+                    throw new UsernameNotFoundException("User credentials are not valid!");
+                });
     }
 }
