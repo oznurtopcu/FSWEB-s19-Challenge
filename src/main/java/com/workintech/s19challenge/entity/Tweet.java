@@ -1,5 +1,6 @@
 package com.workintech.s19challenge.entity;
 
+import com.workintech.s19challenge.entity.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

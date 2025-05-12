@@ -1,5 +1,6 @@
-package com.workintech.s19challenge.entity;
+package com.workintech.s19challenge.entity.user;
 
+import com.workintech.s19challenge.entity.Tweet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

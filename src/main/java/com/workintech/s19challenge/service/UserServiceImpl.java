@@ -1,6 +1,6 @@
 package com.workintech.s19challenge.service;
 
-import com.workintech.s19challenge.entity.User;
+import com.workintech.s19challenge.entity.user.User;
 import com.workintech.s19challenge.exceptions.ApiException;
 import com.workintech.s19challenge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
