@@ -18,6 +18,11 @@ public class TweetController {
         this.tweetService = tweetService;
     }
 
+    @GetMapping("/")
+    public String welcomeTwitter() {
+        return "welcome to twitter!";
+    }
+
     @GetMapping("/findByUserId/{id}")
     public List<Tweet> findByUserId(@PathVariable long id) {
         return tweetService.findByUserId(id);
