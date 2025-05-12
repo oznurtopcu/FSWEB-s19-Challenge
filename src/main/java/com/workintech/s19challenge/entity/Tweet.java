@@ -1,6 +1,7 @@
 package com.workintech.s19challenge.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Tweet {
     private Long id;
 
     @Column(name = "content")
+    @NotBlank(message = "Tweet content cannot be empty!")
     private String content;
 
     //User - Tweet
