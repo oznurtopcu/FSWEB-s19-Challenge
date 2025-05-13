@@ -1,5 +1,6 @@
 package com.workintech.s19challenge.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.workintech.s19challenge.entity.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,5 +27,6 @@ public class Tweet {
     //User - Tweet
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }
