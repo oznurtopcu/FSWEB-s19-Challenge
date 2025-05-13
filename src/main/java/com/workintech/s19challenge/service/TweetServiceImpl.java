@@ -38,19 +38,30 @@ public class TweetServiceImpl implements TweetService{
         return tweetRepository.save(tweet);
     }
 
+
     @Override
-    public Tweet update(long id, Tweet tweet) {
-        //id kullanarak güncellenmesi istenen tweeti bulduk
+    public Tweet update(long id, String content, long user_id) {
         Tweet foundTweet = findById(id);
-        //yeni tweet'in id'sini bulduğumuz id'ye eşitledik
-        tweet.setId(foundTweet.getId());
-        //Tweet'i kaydettik, id aynı olduğu için eski bilginin üzerine yazıldı
-        return save(tweet);
+        if(!foundTweet.getUser().getId().equals(user_id)) {
+            throw new ApiException("No authorisation to update the tweet!", HttpStatus.FORBIDDEN);
+        }
+
+        if(content.trim().isEmpty()) {
+            throw new ApiException("Tweet content cannot be empty!", HttpStatus.BAD_REQUEST);
+        }
+
+        foundTweet.setContent(content);
+        return tweetRepository.save(foundTweet);
     }
 
     @Override
-    public Tweet delete(long id) {
+    public Tweet delete(long id, long user_id) {
         Tweet foundTweet = findById(id);
+
+        if(!foundTweet.getUser().getId().equals(user_id)) {
+            throw new ApiException("No authorisation to delete the tweet!", HttpStatus.FORBIDDEN);
+        }
+
         tweetRepository.delete(foundTweet);
         return foundTweet;
     }
@@ -62,4 +73,16 @@ public class TweetServiceImpl implements TweetService{
         //sonra user'ın tweetlerini getir.
         return foundUser.getTweets().stream().collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public Tweet create(String content, long user_id) {
+        User foundUser = userService.findById(user_id);
+
+        Tweet tweet = new Tweet();
+        tweet.setContent(content);
+        tweet.setUser(foundUser);
+        foundUser.addTweet(tweet);
+        return tweetRepository.save(tweet);
+    }
+
 }
