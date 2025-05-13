@@ -8,8 +8,11 @@ public interface TweetService {
 
     List<Tweet> findAll();
     Tweet findById(long id);
-    Tweet save(Tweet tweet);
-    Tweet update(long id, Tweet tweet);
-    Tweet delete(long id);
     List<Tweet> findByUserId(long id);
+    Tweet save(Tweet tweet);
+    Tweet create(String content, long user_id);
+    Tweet update(long id, String content, long user_id);
+    Tweet delete(long id, long user_id);
+
+
 }
