@@ -1,12 +1,15 @@
 package com.workintech.s19challenge.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.workintech.s19challenge.entity.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,4 +32,9 @@ public class Tweet {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    //Tweet - Comment
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweet")
+    @JsonManagedReference
+    private List<Comment> comments;
 }

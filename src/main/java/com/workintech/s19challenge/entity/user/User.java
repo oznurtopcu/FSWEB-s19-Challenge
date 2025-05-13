@@ -1,6 +1,7 @@
 package com.workintech.s19challenge.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.workintech.s19challenge.entity.Comment;
 import com.workintech.s19challenge.entity.Tweet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -55,6 +56,18 @@ public class User implements UserDetails {
         tweets.add(tweet);
     }
 
+    //User - Comment
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
+    private List<Comment> comments;
+
+    public void addComment(Comment comment) {
+        if(comments == null) {
+            comments = new ArrayList<>();
+        }
+        comments.add(comment);
+    }
+
 
     //User - Role
     //Uni-directional bağ
@@ -62,6 +75,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role", schema = "public",
             joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities = new HashSet<>();
+
 
 
     @Override
