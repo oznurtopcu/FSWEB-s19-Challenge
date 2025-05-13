@@ -1,5 +1,6 @@
 package com.workintech.s19challenge.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.workintech.s19challenge.entity.Tweet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,10 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +28,7 @@ public class User implements UserDetails {
 
     @Column(name = "user_name")
     @NotBlank(message = "Username cannot be empty!")
+    @Size(max = 50, message = "Username cannot be more than 50 characters!")
     private String userName;
 
     @Column(name = "email")
@@ -46,14 +45,24 @@ public class User implements UserDetails {
 
     //User - Tweet
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
     private List<Tweet> tweets;
+
+    public void addTweet(Tweet tweet) {
+        if(tweets == null) {
+            tweets = new ArrayList<>();
+        }
+        tweets.add(tweet);
+    }
+
 
     //User - Role
     //Uni-directional bağ
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", schema = "public",
             joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
