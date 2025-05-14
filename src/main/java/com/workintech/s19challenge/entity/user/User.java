@@ -2,6 +2,7 @@ package com.workintech.s19challenge.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.workintech.s19challenge.entity.Comment;
+import com.workintech.s19challenge.entity.Like;
 import com.workintech.s19challenge.entity.Tweet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -66,6 +67,17 @@ public class User implements UserDetails {
             comments = new ArrayList<>();
         }
         comments.add(comment);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
+    private List<Like> likes;
+
+    public void addLike(Like like) {
+        if(likes == null) {
+            likes = new ArrayList<>();
+        }
+        likes.add(like);
     }
 
 

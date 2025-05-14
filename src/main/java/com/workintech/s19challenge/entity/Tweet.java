@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -37,4 +38,22 @@ public class Tweet {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweet")
     @JsonManagedReference
     private List<Comment> comments;
+
+    public void addComment(Comment comment) {
+        if(comments == null) {
+            comments = new ArrayList<>();
+        }
+        comments.add(comment);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweet")
+    @JsonManagedReference
+    private List<Like> likes;
+
+    public void addLike(Like like) {
+        if(likes == null) {
+            likes = new ArrayList<>();
+        }
+        likes.add(like);
+    }
 }
