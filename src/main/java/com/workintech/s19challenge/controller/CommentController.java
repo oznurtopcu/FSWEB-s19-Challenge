@@ -35,6 +35,6 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public Comment delete(@PathVariable long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return commentService.delete(id, user.getId());
+        return commentService.delete(id, user);
     }
 }

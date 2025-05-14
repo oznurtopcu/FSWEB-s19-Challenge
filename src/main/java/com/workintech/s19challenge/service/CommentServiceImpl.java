@@ -63,12 +63,15 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Comment delete(long id, long user_id) {
+    public Comment delete(long id, User user) {
         Comment foundComment = findById(id);
 
-        if(!foundComment.getUser().getId().equals(user_id) || !foundComment.getTweet().getUser().getId().equals(user_id)) {
+        if(!foundComment.getUser().getId().equals(user.getId()) && !foundComment.getTweet().getUser().getId().equals(user.getId())) {
             throw new ApiException("No authorisation to delete the tweet!", HttpStatus.FORBIDDEN);
         }
+
+        user.getComments().remove(foundComment);
+        foundComment.getTweet().getComments().remove(foundComment);
         commentRepository.delete(foundComment);
         return foundComment;
     }
