@@ -1,6 +1,7 @@
 package com.workintech.s19challenge.controller;
 
-import com.workintech.s19challenge.dto.CommentRequest;
+import com.workintech.s19challenge.dto.CommentCreateRequest;
+import com.workintech.s19challenge.dto.CommentUpdateRequest;
 import com.workintech.s19challenge.entity.Comment;
 import com.workintech.s19challenge.entity.user.User;
 import com.workintech.s19challenge.service.CommentService;
@@ -19,16 +20,16 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping
-    public Comment create(@RequestBody CommentRequest commentRequest, Authentication authentication) {
+    @PostMapping("/")
+    public Comment create(@RequestBody CommentCreateRequest commentCreateRequest, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return commentService.create(commentRequest.tweet_id(), commentRequest.content(), user.getId());
+        return commentService.create(commentCreateRequest.tweet_id(), commentCreateRequest.content(), user.getId());
     }
 
     @PutMapping("/{id}")
-    public Comment update(@PathVariable long id, @RequestBody String content, Authentication authentication) {
+    public Comment update(@PathVariable long id, @RequestBody CommentUpdateRequest commentUpdateRequest, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return commentService.update(id,content, user.getId());
+        return commentService.update(id,commentUpdateRequest.content(), user.getId());
     }
 
     @DeleteMapping("/{id}")

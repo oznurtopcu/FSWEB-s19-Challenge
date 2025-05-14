@@ -1,6 +1,7 @@
 package com.workintech.s19challenge.service;
 
 import com.workintech.s19challenge.entity.Comment;
+import com.workintech.s19challenge.entity.Tweet;
 import com.workintech.s19challenge.entity.user.User;
 import com.workintech.s19challenge.exceptions.ApiException;
 import com.workintech.s19challenge.repository.CommentRepository;
@@ -13,11 +14,13 @@ public class CommentServiceImpl implements CommentService{
 
     private CommentRepository commentRepository;
     private UserService userService;
+    private TweetService tweetService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserService userService) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserService userService, TweetService tweetService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
+        this.tweetService = tweetService;
     }
 
     @Override
@@ -33,9 +36,12 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public Comment create(long tweet_id, String content, long user_id) {
         User foundUser = userService.findById(user_id);
+        Tweet foundTweet = tweetService.findById(tweet_id);
         Comment comment = new Comment();
         comment.setComment(content);
         comment.setUser(foundUser);
+        comment.setTweet(foundTweet);
+        foundTweet.addComment(comment);
         foundUser.addComment(comment);
         return save(comment);
     }
