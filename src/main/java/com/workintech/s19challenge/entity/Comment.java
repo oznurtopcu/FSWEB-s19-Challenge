@@ -26,13 +26,13 @@ public class Comment {
 
     //Comment - User
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
 
     //Comment - Tweet
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "tweet_id")
+    @JoinColumn(name = "tweet_id", nullable = false)
     @JsonBackReference
     private Tweet tweet;
 }
